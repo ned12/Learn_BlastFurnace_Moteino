@@ -15,11 +15,12 @@ If you want to read more about them [visit the moteino website](https://lowpower
 ## The Software
 As mentioned one of the advantages is being able to program the boards with the Arduino IDE. For this tutroial we will use the Arduino Web IDE to reduce the setup time.
 
-We will also leverage the libraries and examples from moteino. I have put copies in this repo however we will only need them as a backup. 
+We will also leverage the libraries and examples from moteino. I have put copies in this repo.
 
 ## Setup The Software
 To get going Lets setup the IDE so we can program the boards:
-1. Sign up or Login in to the [Arduino Web IDE](https://create.arduino.cc/editor)
-2. Install the [Arduino Agent](https://create.arduino.cc/getting-started/plugin/welcome)
-3. Got to the **Libraries** section and click the **Import** icon
-4. Select the **RFM69_LowPowerLab-1.4.3.zip** from this repo and click upload
+1. Clone or Download this Repo
+2. Sign up or Login in to the [Arduino Web IDE](https://create.arduino.cc/editor)
+3. Install the [Arduino Agent](https://create.arduino.cc/getting-started/plugin/welcome)
+4. Got to the **Libraries** section and click the **Import** icon
+5. Select the **RFM69_LowPowerLab-1.4.3.zip** from this repo and click upload
