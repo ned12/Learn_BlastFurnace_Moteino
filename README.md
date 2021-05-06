@@ -19,3 +19,7 @@ We will also leverage the libraries and examples from moteino. I have put copies
 
 ## Setup The Software
 To get going Lets setup the IDE so we can program the boards:
+1. Sign up or Login in to the [Arduino Web IDE](https://create.arduino.cc/editor)
+2. Install the [Arduino Agent](https://create.arduino.cc/getting-started/plugin/welcome)
+3. Got to the **Libraries** section and click the **Import** icon
+4. Select the **RFM69_LowPowerLab-1.4.3.zip** from this repo and click upload
