@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"name": "pat1-sender",
+			"path": "pat1-sender"
+		},
+		{
+			"path": "part1-receiver"
+		}
+	],
+	"settings": {}
+}
