@@ -24,3 +24,5 @@ To get going Lets setup the IDE so we can program the boards:
 3. Install the [Arduino Agent](https://create.arduino.cc/getting-started/plugin/welcome)
 4. Got to the **Libraries** section and click the **Import** icon
 5. Select the **RFM69_LowPowerLab-1.4.3.zip** from this repo and click upload
+
+VCP Drivers: https://ftdichip.com/drivers/vcp-drivers/
