@@ -6,6 +6,10 @@
 		},
 		{
 			"path": "part1-receiver"
+		},
+		{
+			"name": "part2-gateway",
+			"path": "part2-gateway"
 		}
 	],
 	"settings": {}
