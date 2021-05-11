@@ -21,10 +21,10 @@ We will also leverage the libraries and examples from moteino. I have put copies
 To get going Lets setup the IDE so we can program the boards:
 1. Clone or Download this Repo
 2. Download and install [VS Code](https://code.visualstudio.com/download)
-3. Add the [Platform IO plugin](https://platformio.org/install/ide?install=vscode) to VS code
+3. Add the [Platform IO plugin](https://platformio.org/install/ide?install=vscode) to VS code. [Watch](https://user-images.githubusercontent.com/9794797/117762834-3678d500-b26d-11eb-83a1-2ab196106b5b.mp4)
 4. Install [Virtul Com Port Drivers](https://ftdichip.com/drivers/vcp-drivers/) for the Moteino Boards
 5. Connect you Moteino board to your computer
-6. In VS code select __File > Open Workspace__ and open __src/bf-iot-ws.code-workspace__
+6. In VS code select __File > Open Workspace__ and open __src/bf-iot-ws.code-workspace__. [Watch](https://user-images.githubusercontent.com/9794797/117763046-7c359d80-b26d-11eb-92ab-f1d1a5536e0c.mp4) 
 
 We are now ready to start programming.
 
