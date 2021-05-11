@@ -20,9 +20,20 @@ We will also leverage the libraries and examples from moteino. I have put copies
 ## Setup The Software
 To get going Lets setup the IDE so we can program the boards:
 1. Clone or Download this Repo
-2. Sign up or Login in to the [Arduino Web IDE](https://create.arduino.cc/editor)
-3. Install the [Arduino Agent](https://create.arduino.cc/getting-started/plugin/welcome)
-4. Got to the **Libraries** section and click the **Import** icon
-5. Select the **RFM69_LowPowerLab-1.4.3.zip** from this repo and click upload
+2. Download and install [VS Code](https://code.visualstudio.com/download)
+3. Add the [Platform IO plugin](https://platformio.org/install/ide?install=vscode) to VS code
+4. Install [Virtul Com Port Drivers](https://ftdichip.com/drivers/vcp-drivers/) for the Moteino Boards
+5. Connect you Moteino board to your computer
+6. In VS code select __File > Open Workspace__ and open __src/bf-iot-ws.code-workspace__
 
-VCP Drivers: https://ftdichip.com/drivers/vcp-drivers/
+We are now ready to start programming.
+
+## Part 1 - TX RX Blinky
+This is a simple example application to demonstrate how to control the LED of one Moteino from another. Setup your Moteino as a sender:
+
+1. Select `part1-receiver` as the environment
+2. Select Upload
+
+The board should now be flashed. The state of the LED will change with each command from the sender.
+
+
