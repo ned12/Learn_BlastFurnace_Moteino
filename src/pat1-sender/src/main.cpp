@@ -60,7 +60,7 @@
 //Match frequency to the hardware version of the radio on your Moteino (uncomment one):
 #define FREQUENCY     RF69_433MHZ
 
-#define ENCRYPTKEY    "blastfurnace" //exactly the same 16 characters/bytes on all nodes!
+#define ENCRYPTKEY    "blastfurnace123" //exactly the same 16 characters/bytes on all nodes!
 #define IS_RFM69HW_HCW  //uncomment only for RFM69HW/HCW! Leave out if you have RFM69W/CW!
 //*****************************************************************************************************************************
 #define ENABLE_ATC      //comment out this line to disable AUTO TRANSMISSION CONTROL
