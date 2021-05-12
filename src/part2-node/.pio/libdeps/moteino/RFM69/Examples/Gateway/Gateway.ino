@@ -1,4 +1,13 @@
 // **********************************************************************************
+//            !!!!     ATTENTION:    !!!!
+// This is just a simple receiving sketch that will work with most examples
+// in the RFM69 library.
+//
+// If you're looking for the Gateway sketch to use with your RaspberryPi,
+// as part of the PiGateway software interface (lowpowerlab.com/gateway),
+// this is the wrong sketch. Use this sketch instead: PiGateway:
+// https://github.com/LowPowerLab/RFM69/blob/master/Examples/PiGateway/PiGateway.ino
+// **********************************************************************************
 // Sample RFM69 receiver/gateway sketch, with ACK and optional encryption, and Automatic Transmission Control
 // Passes through any wireless received messages to the serial port & responds to ACKs
 // It also looks for an onboard FLASH chip, if present
@@ -35,9 +44,10 @@
 #define NODEID        1    //should always be 1 for a Gateway
 #define NETWORKID     100  //the same on all nodes that talk to each other
 //Match frequency to the hardware version of the radio on your Moteino (uncomment one):
-#define FREQUENCY     RF69_433MHZ
-
-#define ENCRYPTKEY    "blastfurnace123" //exactly the same 16 characters/bytes on all nodes!
+//#define FREQUENCY     RF69_433MHZ
+//#define FREQUENCY     RF69_868MHZ
+#define FREQUENCY     RF69_915MHZ
+#define ENCRYPTKEY    "sampleEncryptKey" //exactly the same 16 characters/bytes on all nodes!
 #define IS_RFM69HW_HCW  //uncomment only for RFM69HW/HCW! Leave out if you have RFM69W/CW!
 //*********************************************************************************************
 //Auto Transmission Control - dials down transmit power to save battery
@@ -57,14 +67,6 @@
 
 SPIFlash flash(SS_FLASHMEM, 0xEF30); //EF30 for 4mbit  Windbond chip (W25X40CL)
 bool spy = false; //set to 'true' to sniff all packets on the same network
-
-void Blink(byte PIN, int DELAY_MS)
-{
-  pinMode(PIN, OUTPUT);
-  digitalWrite(PIN,HIGH);
-  delay(DELAY_MS);
-  digitalWrite(PIN,LOW);
-}
 
 void setup() {
   Serial.begin(SERIAL_BAUD);
@@ -199,3 +201,10 @@ void loop() {
   }
 }
 
+void Blink(byte PIN, int DELAY_MS)
+{
+  pinMode(PIN, OUTPUT);
+  digitalWrite(PIN,HIGH);
+  delay(DELAY_MS);
+  digitalWrite(PIN,LOW);
+}

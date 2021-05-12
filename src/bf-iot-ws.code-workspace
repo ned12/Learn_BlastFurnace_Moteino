@@ -10,6 +10,9 @@
 		{
 			"name": "part2-gateway",
 			"path": "part2-gateway"
+		},
+		{
+			"path": "part2-node"
 		}
 	],
 	"settings": {}

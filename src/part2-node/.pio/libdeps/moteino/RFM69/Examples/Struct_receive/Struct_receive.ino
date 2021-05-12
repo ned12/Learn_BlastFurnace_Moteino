@@ -1,9 +1,7 @@
 // **********************************************************************************
-// Sample RFM69 receiver/gateway sketch, with ACK and optional encryption, and Automatic Transmission Control
-// Passes through any wireless received messages to the serial port & responds to ACKs
-// It also looks for an onboard FLASH chip, if present
+// Struct Receive RFM69 Example
 // **********************************************************************************
-// Copyright Felix Rusu 2016, http://www.LowPowerLab.com/contact
+// Copyright Felix Rusu 2018, http://www.LowPowerLab.com/contact
 // **********************************************************************************
 // License
 // **********************************************************************************
@@ -28,16 +26,17 @@
 #include <RFM69.h>         //get it here: https://www.github.com/lowpowerlab/rfm69
 #include <RFM69_ATC.h>     //get it here: https://www.github.com/lowpowerlab/rfm69
 #include <SPIFlash.h>      //get it here: https://www.github.com/lowpowerlab/spiflash
-
+#include <SPI.h>           //included with Arduino IDE install (www.arduino.cc)
 //*********************************************************************************************
 //************ IMPORTANT SETTINGS - YOU MUST CHANGE/CONFIGURE TO FIT YOUR HARDWARE *************
 //*********************************************************************************************
-#define NODEID        1    //should always be 1 for a Gateway
-#define NETWORKID     100  //the same on all nodes that talk to each other
+#define NODEID      1
+#define NETWORKID   100
 //Match frequency to the hardware version of the radio on your Moteino (uncomment one):
-#define FREQUENCY     RF69_433MHZ
-
-#define ENCRYPTKEY    "blastfurnace123" //exactly the same 16 characters/bytes on all nodes!
+//#define FREQUENCY     RF69_433MHZ
+//#define FREQUENCY     RF69_868MHZ
+#define FREQUENCY     RF69_915MHZ
+#define ENCRYPTKEY    "sampleEncryptKey" //has to be same 16 characters/bytes on all nodes, not more not less!
 #define IS_RFM69HW_HCW  //uncomment only for RFM69HW/HCW! Leave out if you have RFM69W/CW!
 //*********************************************************************************************
 //Auto Transmission Control - dials down transmit power to save battery
@@ -47,7 +46,7 @@
 //dial their power down to only the required level
 #define ENABLE_ATC    //comment out this line to disable AUTO TRANSMISSION CONTROL
 //*********************************************************************************************
-#define SERIAL_BAUD   115200
+#define SERIAL_BAUD 115200
 
 #ifdef ENABLE_ATC
   RFM69_ATC radio;
@@ -55,16 +54,15 @@
   RFM69 radio;
 #endif
 
-SPIFlash flash(SS_FLASHMEM, 0xEF30); //EF30 for 4mbit  Windbond chip (W25X40CL)
+SPIFlash flash(SS_FLASHMEM, 0xEF30); //EF40 for 16mbit windbond chip
 bool spy = false; //set to 'true' to sniff all packets on the same network
 
-void Blink(byte PIN, int DELAY_MS)
-{
-  pinMode(PIN, OUTPUT);
-  digitalWrite(PIN,HIGH);
-  delay(DELAY_MS);
-  digitalWrite(PIN,LOW);
-}
+typedef struct {
+  int           nodeId; //store this nodeId
+  unsigned long uptime; //uptime in ms
+  float         temp;   //temperature maybe?
+} Payload;
+Payload theData;
 
 void setup() {
   Serial.begin(SERIAL_BAUD);
@@ -75,39 +73,16 @@ void setup() {
 #endif
   radio.encrypt(ENCRYPTKEY);
   radio.spyMode(spy);
-  //radio.setFrequency(916000000); //set frequency to some custom frequency
   char buff[50];
   sprintf(buff, "\nListening at %d Mhz...", FREQUENCY==RF69_433MHZ ? 433 : FREQUENCY==RF69_868MHZ ? 868 : 915);
   Serial.println(buff);
   if (flash.initialize())
-  {
-    Serial.print("SPI Flash Init OK. Unique MAC = [");
-    flash.readUniqueId();
-    for (byte i=0;i<8;i++)
-    {
-      Serial.print(flash.UNIQUEID[i], HEX);
-      if (i!=8) Serial.print(':');
-    }
-    Serial.println(']');
-    
-    //alternative way to read it:
-    //byte* MAC = flash.readUniqueId();
-    //for (byte i=0;i<8;i++)
-    //{
-    //  Serial.print(MAC[i], HEX);
-    //  Serial.print(' ');
-    //}
-  }
+    Serial.println("SPI Flash Init OK!");
   else
-    Serial.println("SPI Flash MEM not found (is chip soldered?)...");
-    
-#ifdef ENABLE_ATC
-  Serial.println("RFM69_ATC Enabled (Auto Transmission Control)");
-#endif
+    Serial.println("SPI Flash Init FAIL! (is chip present?)");
 }
 
 byte ackCount=0;
-uint32_t packetCount = 0;
 void loop() {
   //process any serial input
   if (Serial.available() > 0)
@@ -123,7 +98,7 @@ void loop() {
     {
       spy = !spy;
       radio.spyMode(spy);
-      Serial.print("SpyMode mode ");Serial.println(spy ? "on" : "off");
+      Serial.print("Spy mode ");Serial.println(spy ? "on" : "off");
     }
     
     if (input == 'd') //d=dump flash area
@@ -140,7 +115,7 @@ void loop() {
     }
     if (input == 'D')
     {
-      Serial.print("Deleting Flash chip ... ");
+      Serial.print("Deleting Flash chip content... ");
       flash.chipErase();
       while(flash.busy());
       Serial.println("DONE");
@@ -151,28 +126,26 @@ void loop() {
       word jedecid = flash.readDeviceId();
       Serial.println(jedecid, HEX);
     }
-    if (input == 't')
-    {
-      byte temperature =  radio.readTemperature(-1); // -1 = user cal factor, adjust for correct ambient
-      byte fTemp = 1.8 * temperature + 32; // 9/5=1.8
-      Serial.print( "Radio Temp is ");
-      Serial.print(temperature);
-      Serial.print("C, ");
-      Serial.print(fTemp); //converting to F loses some resolution, obvious when C is on edge between 2 values (ie 26C=78F, 27C=80F)
-      Serial.println('F');
-    }
   }
 
   if (radio.receiveDone())
   {
-    Serial.print("#[");
-    Serial.print(++packetCount);
-    Serial.print(']');
     Serial.print('[');Serial.print(radio.SENDERID, DEC);Serial.print("] ");
+    Serial.print(" [RX_RSSI:");Serial.print(radio.readRSSI());Serial.print("]");
     if (spy) Serial.print("to [");Serial.print(radio.TARGETID, DEC);Serial.print("] ");
-    for (byte i = 0; i < radio.DATALEN; i++)
-      Serial.print((char)radio.DATA[i]);
-    Serial.print("   [RX_RSSI:");Serial.print(radio.RSSI);Serial.print("]");
+
+    if (radio.DATALEN != sizeof(Payload))
+      Serial.print("Invalid payload received, not matching Payload struct!");
+    else
+    {
+      theData = *(Payload*)radio.DATA; //assume radio.DATA actually contains our struct and not something else
+      Serial.print(" nodeId=");
+      Serial.print(theData.nodeId);
+      Serial.print(" uptime=");
+      Serial.print(theData.uptime);
+      Serial.print(" temp=");
+      Serial.print(theData.temp);
+    }
     
     if (radio.ACKRequested())
     {
@@ -199,3 +172,10 @@ void loop() {
   }
 }
 
+void Blink(byte PIN, int DELAY_MS)
+{
+  pinMode(PIN, OUTPUT);
+  digitalWrite(PIN,HIGH);
+  delay(DELAY_MS);
+  digitalWrite(PIN,LOW);
+}
