@@ -29,11 +29,21 @@ To get going Lets setup the IDE so we can program the boards:
 We are now ready to start programming.
 
 ## Part 1 - TX RX Blinky
-This is a simple example application to demonstrate how to control the LED of one Moteino from another. Setup your Moteino as a sender:
+This is a simple example application to demonstrate how to control the LED of one Moteino from another. This will demonstrate a simple method of wirelessly controlling the LED of a moteino from another. To setup your Moteino as a receiver:
 
-1. Select `part1-receiver` as the environment
+1. In the `src/main.cpp` of the `part1-receiver` folder change the __NODEID__ to your unique node number.
+2. Select `src/part1-receiver` as the environment
+3. Select Upload
+
+The board should now be flashed. The state of the LED will change with each command from the sender. Open the serial monitor by clicking on the serial monitor icon.
+
+To setup your board as a sender follow the same steps but use the `src/part1-sender` code instead.
+
+## Part 2 - Nodes and Gateways
+This section will deomstrate a more practical use for IoT. This is called a node and gateway configuration. The presenter will demonstrate setting his device up as a gateway. You will then setup your device as a node and send information to the gateway moteino. To setup your device as a node:
+
+1. In the `src/main.cpp` of the `part2-node` folder change the __NODEID__ to your unique node number.
+1. Select `src/part2-node` as the environment
 2. Select Upload
 
-The board should now be flashed. The state of the LED will change with each command from the sender.
-
-
+Once the presenter has the gateway running on his screen you will see any messages, your node sends, appear on the gateway serial monitor.
