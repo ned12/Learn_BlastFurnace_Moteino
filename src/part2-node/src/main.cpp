@@ -182,7 +182,7 @@ void loop() {
     Blink(LED_BUILTIN,3);
     Serial.println();
   }
-
+  //*********************************************************************************************
   //Send payload every TRANSMITPERIOD ms
   int currPeriod = millis()/TRANSMITPERIOD;
   if (currPeriod != lastPeriod)
@@ -197,4 +197,5 @@ void loop() {
     Serial.println();
     Blink(LED_BUILTIN,3);
   }
+  //*********************************************************************************************
 }
