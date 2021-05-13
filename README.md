@@ -33,9 +33,13 @@ This is a simple example application to demonstrate how to control the LED of on
 
 1. In the `src/main.cpp` of the `part1-receiver` folder change the __NODEID__ to your unique node number.
 2. Select `src/part1-receiver` as the environment
-3. Select Upload
+3. Select Build and Upload
+
+![Build and Upload Button](https://user-images.githubusercontent.com/9794797/118064401-4532c980-b3de-11eb-8c36-2b3c21ab5347.png)
 
 The board should now be flashed. The state of the LED will change with each command from the sender. Open the serial monitor by clicking on the serial monitor icon.
+
+![Open Serial Monitor](https://user-images.githubusercontent.com/9794797/118064318-1fa5c000-b3de-11eb-9321-d3f9cc11c7c2.png)
 
 To setup your board as a sender follow the same steps but use the `src/part1-sender` code instead.
 
