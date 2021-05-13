@@ -1,6 +1,24 @@
 # Moteino Wireless Comms for IoT
 This event will step through using the moteino RF microcontrollers for create a low cost wireless comms network. 
 
+## IoT Network Options
+When working with IoT the basic concept is to have some sensor that is collecting data from the real world (at the ground level) and moving that information into the cloud. We call the software that enables this process __Ground-to-Cloud__ software. Usually some sort of wireless technology is involved to get the data from the sensor into the internet. Common conduits for this are:
+* Mobile Network - Transmititng data over the mobile network. Good coverage but requires a sim card. This includes 5G, 4G, CAT M1, NB-IoT
+* LoRA Network - A free to use network built on the ISM bands. It's free but bandwidth is highly limited and coverage is dependant on someone in the area providing a gateway.
+* WiFi - You can connect IoT sensor to a normal wifi network. This is low cost but you will need a wifi router in range that requires a fixed internet connection.
+* Combinations of the above - you can obvioulsy have combinations of the above. For example a wifi router running of a 4G LTE sim card.
+
+The Moteino board enable you to create your own mini network for a number of sensors in a given area. All these devices can communicate with each over [300 - 400m open air](https://lowpowerlab.com/shop/product/99#:~:text=Open%20air%20range%3A,fine%20tuning%20the%20RX%20bandwidth). These can all funnel there information back to a single gateway that has access to the internet via one of the aforementioned methods. Advantages of this are:
+* You are free to use a lot of bandwidth
+* You don't need to inundate your router with heaps of devices
+* You can get excellent range
+* You don't need a sim card per sensor
+* You aren't tying each sensor node to a particular commms method back to the internet
+* They are super low power if they need to be.
+
+![Moteino Network](https://user-images.githubusercontent.com/9794797/118072288-cf822a00-b3ec-11eb-943a-9dcd6b250f65.png)
+
+
 ## The Hardware
 In my opinion one of the best wireless MCU dev boards around are the Moteino boards. I like them for the following reasons:
 * They are low cost (~$15-20 AUD)
