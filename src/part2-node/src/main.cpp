@@ -62,7 +62,7 @@
 //*********************************************************************************************
 #define SERIAL_BAUD   115200
 
-int TRANSMITPERIOD = 2000; //transmit a packet to gateway so often (in ms)
+int TRANSMITPERIOD = 5000; //transmit a packet to gateway so often (in ms)
 char payload[] = "hello from node 2";
 char buff[200];
 byte sendSize=0;
@@ -102,20 +102,6 @@ void setup() {
   sprintf(buff, "\nTransmitting at %d Mhz...", FREQUENCY==RF69_433MHZ ? 433 : FREQUENCY==RF69_868MHZ ? 868 : 915);
   Serial.println(buff);
 
-  if (flash.initialize())
-  {
-    Serial.print("SPI Flash Init OK ... UniqueID (MAC): ");
-    flash.readUniqueId();
-    for (byte i=0;i<8;i++)
-    {
-      Serial.print(flash.UNIQUEID[i], HEX);
-      Serial.print(' ');
-    }
-    Serial.println();
-  }
-  else
-    Serial.println("SPI Flash MEM not found (is chip soldered?)...");
-
 #ifdef ENABLE_ATC
   Serial.println("RFM69_ATC Enabled (Auto Transmission Control)\n");
 #endif
@@ -130,6 +116,7 @@ void Blink(byte PIN, int DELAY_MS)
 }
 
 long lastPeriod = 0;
+
 void loop() {
   //process any serial input
   if (Serial.available() > 0)
@@ -137,7 +124,7 @@ void loop() {
     char input = Serial.read();
     if (input >= 48 && input <= 57) //[0,9]
     {
-      TRANSMITPERIOD = 100 * (input-48);
+      TRANSMITPERIOD = 1000 * (input-48);
       if (TRANSMITPERIOD == 0) TRANSMITPERIOD = 1000;
       Serial.print("\nChanging delay to ");
       Serial.print(TRANSMITPERIOD);
@@ -196,34 +183,17 @@ void loop() {
     Serial.println();
   }
 
+  //Send payload every TRANSMITPERIOD ms
   int currPeriod = millis()/TRANSMITPERIOD;
   if (currPeriod != lastPeriod)
   {
     lastPeriod=currPeriod;
 
-    //send FLASH id
-    if(sendSize==0)
-    {
-      sprintf(buff, "FLASH_MEM_ID:0x%X", flash.readDeviceId());
-      byte buffLen=strlen(buff);
-      if (radio.sendWithRetry(GATEWAYID, buff, buffLen))
-        Serial.print(" ok!");
-      else Serial.print("flash send failed");
-      //sendSize = (sendSize + 1) % 31;
-    }
-    else
-    {
-      Serial.print("Sending[");
-      Serial.print(sendSize);
-      Serial.print("]: ");
-      for(byte i = 0; i < sendSize; i++)
-        Serial.print((char)payload[i]);
+    byte buffLen=strlen(payload);
+    if (radio.sendWithRetry(GATEWAYID, payload, buffLen))
+      Serial.print(" ok!");
+    else Serial.print("flash send failed");
 
-      if (radio.sendWithRetry(GATEWAYID, payload, sendSize))
-       Serial.print(" ok!");
-      else Serial.print(" nothing...");
-    }
-    //sendSize = (sendSize + 1) % 31;
     Serial.println();
     Blink(LED_BUILTIN,3);
   }

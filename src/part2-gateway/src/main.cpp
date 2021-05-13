@@ -165,11 +165,7 @@ void loop() {
 
   if (radio.receiveDone())
   {
-    Serial.print("#[");
-    Serial.print(++packetCount);
-    Serial.print(']');
     Serial.print('[');Serial.print(radio.SENDERID, DEC);Serial.print("] ");
-    if (spy) Serial.print("to [");Serial.print(radio.TARGETID, DEC);Serial.print("] ");
     for (byte i = 0; i < radio.DATALEN; i++)
       Serial.print((char)radio.DATA[i]);
     Serial.print("   [RX_RSSI:");Serial.print(radio.RSSI);Serial.print("]");
@@ -178,20 +174,21 @@ void loop() {
     {
       byte theNodeID = radio.SENDERID;
       radio.sendACK();
-      Serial.print(" - ACK sent.");
+      //Serial.print(" - ACK sent.");
 
       // When a node requests an ACK, respond to the ACK
       // and also send a packet requesting an ACK (every 3rd one only)
       // This way both TX/RX NODE functions are tested on 1 end at the GATEWAY
       if (ackCount++%3==0)
       {
-        Serial.print(" Pinging node ");
-        Serial.print(theNodeID);
-        Serial.print(" - ACK...");
+        //Serial.print(" Pinging node ");
+        //Serial.print(theNodeID);
+        //Serial.print(" - ACK...");
         delay(3); //need this when sending right after reception .. ?
         if (radio.sendWithRetry(theNodeID, "ACK TEST", 8, 0))  // 0 = only 1 attempt, no retries
-          Serial.print("ok!");
-        else Serial.print("nothing");
+          {//Serial.print("ok!");
+          }
+        //else Serial.print("ACK Failed!");
       }
     }
     Serial.println();
