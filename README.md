@@ -69,3 +69,17 @@ This section will deomstrate a more practical use for IoT. This is called a node
 2. Select Upload
 
 Once the presenter has the gateway running on his screen you will see any messages, your node sends, appear on the gateway serial monitor.
+
+## Challenge 1 - Serial Monitor Node
+For the first challenge we are going to modify our node code so it can take messages from the Serial Monitor and send them to the gateway. The challenge is complete when you can do the following:
+
+1. Open a Serial Monitor to your Node
+2. Type a message into the Serial Monitor and press __Enter__ on the keyboard
+3. See that message appear on the Gateway.
+
+## Challenge 2 - Walkie Talkie
+For the second challenge we are going to create walkie talkies. The goal is to have two moteinos that can send strings between each other. To complete this challenge you will need to buddy up with another group and communicate with them. These are the features your code should enable to finish the challenge:
+
+* Read strings from serial monitor
+* Send strings from Monitor to partner moteino
+* Display stirngs recieved from partner moteino on serial monitor
